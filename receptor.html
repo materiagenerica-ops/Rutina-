@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Clínico Receptor | Seguimiento de Paciente</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white py-6 shadow-md">
+        <div class="max-w-5xl mx-auto px-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold"><i class="fa-solid fa-notes-medical text-emerald-400 mr-2"></i> Centro Receptor Clínico</h1>
+                <p class="text-xs text-slate-400">Monitoreo de cumplimiento de rutinas y rehabilitación</p>
+            </div>
+            <a href="index.html" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium px-4 py-2 rounded-xl transition-all">
+                <i class="fa-solid fa-external-link mr-1"></i> Ver Formulario del Paciente
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                <h2 class="text-lg font-bold text-slate-900">Registros Recibidos del Paciente</h2>
+                <span id="contadorRegistros" class="text-xs bg-slate-100 text-slate-600 font-semibold px-3 py-1 rounded-full">Cargando registros...</span>
+            </div>
+
+            <!-- Contenedor donde se cargará la lista de registros -->
+            <div id="listaRegistros" class="space-y-4">
+                <div class="text-center py-12 text-slate-400">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+                    <p class="text-sm">Conectando con la base de datos de Firebase...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDKs & Logic para leer en tiempo real -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Configuración de Firebase provista
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUFWeEfNnaV5M57O5EPJscarwRZb9jRk0",
+            authDomain: "rutina-eslerosis.firebaseapp.com",
+            projectId: "rutina-eslerosis",
+            storageBucket: "rutina-eslerosis.firebasestorage.app",
+            messagingSenderId: "701973748602",
+            appId: "1:701973748602:web:ed22f8c8711298b3d894c3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const contenedorLista = document.getElementById('listaRegistros');
+        const badgeContador = document.getElementById('contadorRegistros');
+
+        // Consulta en tiempo real ordenada por la fecha de envío más reciente
+        const q = query(collection(db, "registros_paciente"), orderBy("timestamp", "desc"));
+
+        onSnapshot(q, (querySnapshot) => {
+            let htmlContent = "";
+            let total = querySnapshot.size;
+
+            if (total === 0) {
+                badgeContador.textContent = "0 registros encontrados";
+                contenedorLista.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <i class="fa-regular fa-folder-open text-4xl mb-2"></i>
+                        <p class="text-sm">Aún no hay registros enviados por el paciente.</p>
+                    </div>`;
+                return;
+            }
+
+            badgeContador.textContent = `${total} registros totales`;
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const fechaFormateada = data.fecha || "Fecha no especificada";
+                const totalCompletadas = data.totalCompletadas || (data.actividades ? data.actividades.length : 0);
+                const observaciones = data.observaciones || "Sin observaciones adicionales.";
+                
+                // Formatear hora de envío si existe el timestamp
+                let horaEnvio = "";
+                if (data.timestamp && data.timestamp.toDate) {
+                    horaEnvio = data.timestamp.toDate().toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' });
+                }
+
+                // Generar lista de viñetas para las actividades marcadas
+                let actividadesHTML = "";
+                if (data.actividades && data.actividades.length > 0) {
+                    data.actividades.forEach(act => {
+                        actividadesHTML += `<li class="text-xs text-slate-700 flex items-center gap-2 py-0.5"><i class="fa-solid fa-check text-emerald-600"></i> ${act}</li>`;
+                    });
+                } else {
+                    actividadesHTML = `<li class="text-xs text-slate-400 italic">No se marcaron actividades en este envío.</li>`;
+                }
+
+                htmlContent += `
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4 shadow-sm hover:border-slate-300 transition-colors">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-200 pb-3">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-blue-600 text-white font-bold text-xs px-3 py-1 rounded-xl"><i class="fa-solid fa-calendar-day mr-1"></i> ${fechaFormateada}</span>
+                                <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-xl">${totalCompletadas} actividades cumplidas</span>
+                            </div>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> Recibido: ${horaEnvio || 'Procesando...'}</span>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Actividades realizadas:</p>
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 bg-white p-4 rounded-xl border border-slate-100">
+                                ${actividadesHTML}
+                            </ul>
+                        </div>
+
+                        <div class="bg-amber-50/60 border border-amber-200/60 p-3 rounded-xl text-xs text-amber-900">
+                            <strong class="font-semibold block mb-1"><i class="fa-solid fa-comment-medical mr-1"></i> Observaciones del paciente:</strong>
+                            <p class="italic text-slate-700">${observaciones}</p>
+                        </div>
+                    </div>`;
+            });
+
+            contenedorLista.innerHTML = htmlContent;
+        }, (error) => {
+            console.error("Error al leer los datos de Firestore: ", error);
+            contenedorLista.innerHTML = `<div class="text-center py-12 text-red-500 text-sm">Hubo un error al cargar los datos. Verifica las reglas de seguridad de tu base de datos.</div>`;
+        });
+    </script>
+</body>
+</html>
