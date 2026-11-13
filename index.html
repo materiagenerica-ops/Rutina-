@@ -3,127 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan de Rehabilitación y Bienestar | Esclerosis Múltiple</title>
+    <title>Plan de Rehabilitación y Bienestar</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-slate-100 text-slate-800 font-sans p-6">
 
-    <!-- Header -->
-    <header class="bg-slate-900 text-white py-6 shadow-md sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-xl font-bold">Plan Diario de Rehabilitación y Bienestar</h1>
-                <p class="text-xs text-slate-400">Seguimiento terapéutico personalizado</p>
-            </div>
-            <div class="flex items-center gap-3 bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">
-                <label for="fechaSeleccionada" class="text-xs font-medium text-slate-300"><i class="fa-solid fa-calendar-days text-blue-400 mr-1"></i> Fecha:</label>
-                <input type="date" id="fechaSeleccionada" required class="bg-slate-900 text-white text-sm px-2 py-1 rounded border border-slate-700 focus:outline-none focus:border-blue-500">
-            </div>
-        </div>
-    </header>
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-md">
+        <h1 class="text-2xl font-bold mb-6 text-center text-slate-900">Plan Diario de Rehabilitación</h1>
 
-    <!-- Formulario -->
-    <main class="max-w-4xl mx-auto px-4 py-8">
-        <form id="rutinaForm" onsubmit="enviarDatosFirebase(event)" class="space-y-8">
+        <form id="rutinaForm" onsubmit="enviarDatosFirebase(event)" class="space-y-6">
             
-            <!-- DATOS DEL PACIENTE (OBLIGATORIO) -->
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-300 space-y-4">
-                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-user-pen text-blue-600"></i> Identificación del Paciente
-                </h2>
+            <!-- DATOS DEL PACIENTE -->
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl space-y-4">
+                <h2 class="font-bold text-blue-900 text-base">Identificación del Paciente</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="space-y-1">
-                        <label for="nombrePaciente" class="block text-xs font-semibold text-slate-700">Nombre *</label>
-                        <input type="text" id="nombrePaciente" required placeholder="Escribe tu nombre aquí" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
+                    <div>
+                        <label for="nombrePaciente" class="block text-xs font-semibold text-slate-700 mb-1">Nombre *</label>
+                        <input type="text" id="nombrePaciente" required placeholder="Tu nombre" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm">
                     </div>
-                    <div class="space-y-1">
-                        <label for="apellidoPaciente" class="block text-xs font-semibold text-slate-700">Apellido *</label>
-                        <input type="text" id="apellidoPaciente" required placeholder="Escribe tu apellido aquí" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
+                    <div>
+                        <label for="apellidoPaciente" class="block text-xs font-semibold text-slate-700 mb-1">Apellido *</label>
+                        <input type="text" id="apellidoPaciente" required placeholder="Tu apellido" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm">
                     </div>
                 </div>
-            </div>
-
-            <!-- RUTINA 1: MAÑANA -->
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
-                <h2 class="text-xl font-bold text-slate-900 border-b pb-3">1. Rutina de la Mañana</h2>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Mañana: Respiración y nominación de afectos" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Respiración diafragmática y nominación de afectos (5-7 min)</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Mañana: Movilidad articular de miembros superiores" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Movilidad articular en miembros superiores y tronco (5 min)</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Mañana: Estiramientos para espasticidad en piernas" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Estiramientos en silla para reducir espasticidad (10 min)</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Mañana: Micro-metas de estudio" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Organización del estudio mediante "Micro-metas" (5 min)</span>
-                    </label>
+                <div>
+                    <label for="fechaSeleccionada" class="block text-xs font-semibold text-slate-700 mb-1">Fecha de la sesión *</label>
+                    <input type="date" id="fechaSeleccionada" required class="w-full sm:w-auto bg-white border border-slate-300 rounded-lg p-2 text-sm">
                 </div>
             </div>
 
-            <!-- RUTINA 2: FUERZA -->
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
-                <h2 class="text-xl font-bold text-slate-900 border-b pb-3">2. Bloque de Fuerza y Rehabilitación</h2>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Fuerza: Miembros superiores con pesa 1kg" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Bloque A: Brazos con Pesa de 1 kg (Sentado)</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Fuerza: Piernas con banda elástica" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Bloque B: Piernas con Banda Elástica (Sentado)</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Fuerza: Cierre con respiración y valoración" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Cierre de fuerza con respiración consciente (2 min)</span>
-                    </label>
-                </div>
-            </div>
+            <!-- ACTIVIDADES -->
+            <div class="space-y-3">
+                <h2 class="font-bold text-slate-900 text-base">Actividades del Plan</h2>
+                
+                <label class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border cursor-pointer">
+                    <input type="checkbox" name="actividad" value="Mañana: Respiración y nominación de afectos" class="w-4 h-4 text-blue-600">
+                    <span class="text-sm">Respiración diafragmática y nominación de afectos</span>
+                </label>
 
-            <!-- RUTINA 3: NOCHE -->
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
-                <h2 class="text-xl font-bold text-slate-900 border-b pb-3">3. Rutina de la Noche</h2>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Noche: Movilidad pasiva y anti-espasticidad" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Movilidad pasiva y estiramiento anti-espasticidad (10 min)</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Noche: Descarga mental y journaling" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Descarga mental y escritura expresiva / Journaling (10 min)</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Noche: Escaneo corporal de relajación" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Escaneo corporal de relajación / Mindfulness (10 min)</span>
-                    </label>
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
-                        <input type="checkbox" name="actividad" value="Noche: Cierre del día y nominación de afectos nocturnos" class="mt-1 w-5 h-5 text-blue-600 rounded">
-                        <span class="text-sm">Cierre del día y nominación de afectos nocturnos (3 min)</span>
-                    </label>
-                </div>
+                <label class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border cursor-pointer">
+                    <input type="checkbox" name="actividad" value="Mañana: Movilidad articular" class="w-4 h-4 text-blue-600">
+                    <span class="text-sm">Movilidad articular en miembros superiores y tronco</span>
+                </label>
+
+                <label class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border cursor-pointer">
+                    <input type="checkbox" name="actividad" value="Mañana: Estiramientos para espasticidad" class="w-4 h-4 text-blue-600">
+                    <span class="text-sm">Estiramientos en silla para reducir espasticidad</span>
+                </label>
+
+                <label class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border cursor-pointer">
+                    <input type="checkbox" name="actividad" value="Fuerza: Brazos con pesa 1kg y piernas con banda" class="w-4 h-4 text-blue-600">
+                    <span class="text-sm">Bloque de fuerza (pesa 1kg y banda elástica)</span>
+                </label>
+
+                <label class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border cursor-pointer">
+                    <input type="checkbox" name="actividad" value="Noche: Movilidad pasiva y journaling" class="w-4 h-4 text-blue-600">
+                    <span class="text-sm">Rutina nocturna (movilidad pasiva y journaling)</span>
+                </label>
             </div>
 
             <!-- OBSERVACIONES -->
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-3">
-                <label for="observaciones" class="block text-sm font-semibold text-slate-900">Observaciones (Opcional):</label>
-                <textarea id="observaciones" rows="3" placeholder="Escribe aquí..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500"></textarea>
+            <div>
+                <label for="observaciones" class="block text-xs font-semibold text-slate-700 mb-1">Observaciones / Comentarios</label>
+                <textarea id="observaciones" rows="3" placeholder="Comentarios opcionales..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-3 text-sm"></textarea>
             </div>
 
             <!-- BOTÓN -->
-            <div>
-                <button type="submit" id="btnEnviar" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-4 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-up text-xl"></i> Enviar Registro a Mi Centro Clínico
-                </button>
-            </div>
+            <button type="submit" id="btnEnviar" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl shadow transition-all">
+                Enviar Registro a Mi Centro Clínico
+            </button>
         </form>
-    </main>
+    </div>
 
     <!-- FIREBASE -->
     <script type="module">
-        import { initializeApp } from "https
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUFWeEfNnaV5M57O5EPJscarwRZb9jRk0",
+            authDomain: "rutina-eslerosis.firebaseapp.com",
+            projectId: "rutina-eslerosis",
+            storageBucket: "rutina-eslerosis.firebasestorage.app",
+            messagingSenderId: "701973748602",
+            appId: "1:701973748602:web:ed22f8c8711298b3d894c3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('fechaSeleccionada').value = new Date().toISOString().split('T')[0];
+
+        window.enviarDatosFirebase = async function(event) {
+            event.preventDefault();
+
+            const btn = document.getElementById('btnEnviar');
+            btn.disabled = true;
+            btn.textContent = "Enviando...";
+
+            const nombre = document.getElementById('nombrePaciente').value.trim();
+            const apellido = document.getElementById('apellidoPaciente').value.trim();
+            const fecha = document.getElementById('fechaSeleccionada').value;
+            const observaciones = document.getElementById('observaciones').value.trim();
+            
+            const checkboxes = document.querySelectorAll('input[name="actividad"]:checked');
+            const actividadesCompletadas = Array.from(checkboxes).map(cb => cb.value);
+
+            try {
+                await addDoc(collection(db, "registros_paciente"), {
+                    nombre: nombre,
+                    apellido: apellido,
+                    fecha: fecha,
+                    actividades: actividadesCompletadas,
+                    totalCompletadas: actividadesCompletadas.length,
+                    totalPosibles: 5,
+                    observaciones: observaciones,
+                    timestamp: serverTimestamp()
+                });
+
+                alert("¡Enviado con éxito!");
+                document.getElementById('rutinaForm').reset();
+                document.getElementById('fechaSeleccionada').value = new Date().toISOString().split('T')[0];
+            } catch (error) {
+                console.error(error);
+                alert("Error al enviar los datos.");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Enviar Registro a Mi Centro Clínico";
+            }
+        }
+    </script>
+</body>
+</html>
