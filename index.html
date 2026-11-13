@@ -51,7 +51,7 @@
     <main class="max-w-4xl mx-auto px-4 py-8">
         <form id="rutinaForm" onsubmit="enviarDatosFirebase(event)" class="space-y-8">
             
-            <!-- DATOS DEL PACIENTE -->
+            <!-- DATOS DEL PACIENTE (Nombre y Apellido) -->
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-4">
                 <h2 class="text-lg font-bold text-brand-900 flex items-center gap-2">
                     <i class="fa-solid fa-user-pen text-blue-600"></i> Identificación del Paciente
@@ -91,4 +91,113 @@
 
                 <div class="space-y-4">
                     <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Mañana: Respiración y nomin
+                        <input type="checkbox" name="actividad" value="Mañana: Respiración y nominación de afectos" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Respiración diafragmática y nominación de afectos (5-7 min)</strong>
+                            <span class="text-slate-600 text-xs">Respiración 4-6 y poner nombre en voz alta o por escrito a lo que sientes al despertar.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Mañana: Movilidad articular de miembros superiores" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Movilidad articular en miembros superiores y tronco (5 min)</strong>
+                            <span class="text-slate-600 text-xs">Giros de hombros, apertura/cierre de manos y giros suaves de cuello.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Mañana: Estiramientos para espasticidad en piernas" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Estiramientos en silla para reducir espasticidad (10 min)</strong>
+                            <span class="text-slate-600 text-xs">Isquiotibiales, pantorrillas y cuádriceps (cuidando totalmente la zona inguinal).</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Mañana: Micro-metas de estudio" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Organización del estudio mediante "Micro-metas" (5 min)</strong>
+                            <span class="text-slate-600 text-xs">Anotar una sola tarea concreta para ciencias de la comunicación y evitar la rumiación.</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- RUTINA 2: BLOQUE COMPLEMENTARIO DE FUERZA (MAÑANA) -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-brand-900">2. Bloque Complementario de Fuerza y Rehabilitación</h2>
+                        <p class="text-xs text-slate-500">Uso de pesa de 1 kg y banda elástica (realizado sentado).</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Fuerza: Bloque A - Miembros superiores con pesa 1kg" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Bloque A: Brazos con Pesa de 1 kg (Sentado)</strong>
+                            <span class="text-slate-600 text-xs">Flexión de bíceps, extensión de tríceps y elevaciones laterales suaves (2 series c/u).</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Fuerza: Bloque B - Piernas con banda elástica" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Bloque B: Piernas con Banda Elástica (Sentado)</strong>
+                            <span class="text-slate-600 text-xs">Flexión de rodilla resistida, extensión de cuádriceps y dorsiflexión de tobillo (clave contra la renguera).</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Fuerza: Cierre con respiración y valoración" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Cierre de fuerza con respiración consciente (2 min)</strong>
+                            <span class="text-slate-600 text-xs">3 respiraciones lentas reconociendo el esfuerzo antes de pasar al estudio.</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- RUTINA 3: NOCHE -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                <div class="border-b border-slate-100 pb-4 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-xl flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-brand-900">3. Rutina de la Noche: Relajación y Descarga</h2>
+                        <p class="text-xs text-slate-500">Movilidad pasiva, descarga mental (journaling) y escaneo corporal.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Noche: Movilidad pasiva y anti-espasticidad" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Movilidad pasiva y estiramiento anti-espasticidad (10 min)</strong>
+                            <span class="text-slate-600 text-xs">Caída suave de rodillas de lado a lado y abrazo suave de rodillas al pecho en cama.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Noche: Descarga mental y journaling" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Descarga mental y escritura expresiva / Journaling (10 min)</strong>
+                            <span class="text-slate-600 text-xs">Escribir de forma libre las ideas invasivas u obsesiones y cerrar el cuaderno.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
+                        <input type="checkbox" name="actividad" value="Noche: Escaneo corporal de relajación" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
+                        <div class="text-sm">
+                            <strong class="text-brand-900 block">Escaneo corporal de relajación / Mindfulness (10 min)</strong>
+                            <span class="text-slate-600 text-xs">Recorrido mental exhalando tensión desde los pies hasta la cara.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap
