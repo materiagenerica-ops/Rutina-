@@ -1,40 +1,16 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan de Rehabilitación y Bienestar | Esclerosis Múltiple</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        brand: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            800: '#1e293b',
-                            900: '#0f172a',
-                            accent: '#2563eb'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-brand-50 text-brand-800 font-sans antialiased">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
-    <!-- Header / Navbar -->
-    <header class="bg-brand-900 text-white py-6 shadow-md sticky top-0 z-50">
+    <!-- Header -->
+    <header class="bg-slate-900 text-white py-6 shadow-md sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
                 <h1 class="text-xl font-bold">Plan Diario de Rehabilitación y Bienestar</h1>
@@ -47,157 +23,107 @@
         </div>
     </header>
 
-    <!-- Main Container Form -->
+    <!-- Formulario -->
     <main class="max-w-4xl mx-auto px-4 py-8">
         <form id="rutinaForm" onsubmit="enviarDatosFirebase(event)" class="space-y-8">
             
-            <!-- DATOS DEL PACIENTE (Nombre y Apellido) -->
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-4">
-                <h2 class="text-lg font-bold text-brand-900 flex items-center gap-2">
+            <!-- DATOS DEL PACIENTE (OBLIGATORIO) -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-300 space-y-4">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
                     <i class="fa-solid fa-user-pen text-blue-600"></i> Identificación del Paciente
                 </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1">
-                        <label for="nombrePaciente" class="block text-xs font-semibold text-slate-600">Nombre *</label>
-                        <input type="text" id="nombrePaciente" required placeholder="Ej: Juan" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
+                        <label for="nombrePaciente" class="block text-xs font-semibold text-slate-700">Nombre *</label>
+                        <input type="text" id="nombrePaciente" required placeholder="Escribe tu nombre aquí" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
                     </div>
                     <div class="space-y-1">
-                        <label for="apellidoPaciente" class="block text-xs font-semibold text-slate-600">Apellido *</label>
-                        <input type="text" id="apellidoPaciente" required placeholder="Ej: Pérez" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
+                        <label for="apellidoPaciente" class="block text-xs font-semibold text-slate-700">Apellido *</label>
+                        <input type="text" id="apellidoPaciente" required placeholder="Escribe tu apellido aquí" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
                     </div>
-                </div>
-            </div>
-
-            <!-- ALERTA INFORMATIVA -->
-            <div class="bg-blue-50 border border-blue-200 p-4 rounded-2xl flex items-start gap-3 text-sm text-blue-900">
-                <i class="fa-solid fa-circle-info text-blue-600 text-lg mt-0.5"></i>
-                <div>
-                    <strong class="font-semibold block">Instrucciones de registro:</strong>
-                    Marca las casillas de verificación (checkbox) conforme vayas completando cada bloque diario. Al finalizar, presiona el botón de envío al final de la página.
                 </div>
             </div>
 
             <!-- RUTINA 1: MAÑANA -->
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
-                <div class="border-b border-slate-100 pb-4 flex items-center gap-3">
-                    <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-sun"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-brand-900">1. Rutina de la Mañana: Activación y Regulación</h2>
-                        <p class="text-xs text-slate-500">Respiración, movilidad suave, estiramientos y micro-metas de estudio.</p>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Mañana: Respiración y nominación de afectos" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Respiración diafragmática y nominación de afectos (5-7 min)</strong>
-                            <span class="text-slate-600 text-xs">Respiración 4-6 y poner nombre en voz alta o por escrito a lo que sientes al despertar.</span>
-                        </div>
+                <h2 class="text-xl font-bold text-slate-900 border-b pb-3">1. Rutina de la Mañana</h2>
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Mañana: Respiración y nominación de afectos" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Respiración diafragmática y nominación de afectos (5-7 min)</span>
                     </label>
-
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Mañana: Movilidad articular de miembros superiores" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Movilidad articular en miembros superiores y tronco (5 min)</strong>
-                            <span class="text-slate-600 text-xs">Giros de hombros, apertura/cierre de manos y giros suaves de cuello.</span>
-                        </div>
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Mañana: Movilidad articular de miembros superiores" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Movilidad articular en miembros superiores y tronco (5 min)</span>
                     </label>
-
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Mañana: Estiramientos para espasticidad en piernas" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Estiramientos en silla para reducir espasticidad (10 min)</strong>
-                            <span class="text-slate-600 text-xs">Isquiotibiales, pantorrillas y cuádriceps (cuidando totalmente la zona inguinal).</span>
-                        </div>
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Mañana: Estiramientos para espasticidad en piernas" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Estiramientos en silla para reducir espasticidad (10 min)</span>
                     </label>
-
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Mañana: Micro-metas de estudio" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Organización del estudio mediante "Micro-metas" (5 min)</strong>
-                            <span class="text-slate-600 text-xs">Anotar una sola tarea concreta para ciencias de la comunicación y evitar la rumiación.</span>
-                        </div>
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Mañana: Micro-metas de estudio" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Organización del estudio mediante "Micro-metas" (5 min)</span>
                     </label>
                 </div>
             </div>
 
-            <!-- RUTINA 2: BLOQUE COMPLEMENTARIO DE FUERZA (MAÑANA) -->
+            <!-- RUTINA 2: FUERZA -->
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
-                <div class="border-b border-slate-100 pb-4 flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-dumbbell"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-brand-900">2. Bloque Complementario de Fuerza y Rehabilitación</h2>
-                        <p class="text-xs text-slate-500">Uso de pesa de 1 kg y banda elástica (realizado sentado).</p>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Fuerza: Bloque A - Miembros superiores con pesa 1kg" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Bloque A: Brazos con Pesa de 1 kg (Sentado)</strong>
-                            <span class="text-slate-600 text-xs">Flexión de bíceps, extensión de tríceps y elevaciones laterales suaves (2 series c/u).</span>
-                        </div>
+                <h2 class="text-xl font-bold text-slate-900 border-b pb-3">2. Bloque de Fuerza y Rehabilitación</h2>
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Fuerza: Miembros superiores con pesa 1kg" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Bloque A: Brazos con Pesa de 1 kg (Sentado)</span>
                     </label>
-
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Fuerza: Bloque B - Piernas con banda elástica" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Bloque B: Piernas con Banda Elástica (Sentado)</strong>
-                            <span class="text-slate-600 text-xs">Flexión de rodilla resistida, extensión de cuádriceps y dorsiflexión de tobillo (clave contra la renguera).</span>
-                        </div>
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Fuerza: Piernas con banda elástica" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Bloque B: Piernas con Banda Elástica (Sentado)</span>
                     </label>
-
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Fuerza: Cierre con respiración y valoración" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Cierre de fuerza con respiración consciente (2 min)</strong>
-                            <span class="text-slate-600 text-xs">3 respiraciones lentas reconociendo el esfuerzo antes de pasar al estudio.</span>
-                        </div>
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Fuerza: Cierre con respiración y valoración" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Cierre de fuerza con respiración consciente (2 min)</span>
                     </label>
                 </div>
             </div>
 
             <!-- RUTINA 3: NOCHE -->
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
-                <div class="border-b border-slate-100 pb-4 flex items-center gap-3">
-                    <div class="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-xl flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-moon"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-brand-900">3. Rutina de la Noche: Relajación y Descarga</h2>
-                        <p class="text-xs text-slate-500">Movilidad pasiva, descarga mental (journaling) y escaneo corporal.</p>
-                    </div>
+                <h2 class="text-xl font-bold text-slate-900 border-b pb-3">3. Rutina de la Noche</h2>
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Noche: Movilidad pasiva y anti-espasticidad" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Movilidad pasiva y estiramiento anti-espasticidad (10 min)</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Noche: Descarga mental y journaling" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Descarga mental y escritura expresiva / Journaling (10 min)</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Noche: Escaneo corporal de relajación" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Escaneo corporal de relajación / Mindfulness (10 min)</span>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer border">
+                        <input type="checkbox" name="actividad" value="Noche: Cierre del día y nominación de afectos nocturnos" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                        <span class="text-sm">Cierre del día y nominación de afectos nocturnos (3 min)</span>
+                    </label>
                 </div>
+            </div>
 
-                <div class="space-y-4">
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Noche: Movilidad pasiva y anti-espasticidad" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Movilidad pasiva y estiramiento anti-espasticidad (10 min)</strong>
-                            <span class="text-slate-600 text-xs">Caída suave de rodillas de lado a lado y abrazo suave de rodillas al pecho en cama.</span>
-                        </div>
-                    </label>
+            <!-- OBSERVACIONES -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-3">
+                <label for="observaciones" class="block text-sm font-semibold text-slate-900">Observaciones (Opcional):</label>
+                <textarea id="observaciones" rows="3" placeholder="Escribe aquí..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500"></textarea>
+            </div>
 
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Noche: Descarga mental y journaling" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Descarga mental y escritura expresiva / Journaling (10 min)</strong>
-                            <span class="text-slate-600 text-xs">Escribir de forma libre las ideas invasivas u obsesiones y cerrar el cuaderno.</span>
-                        </div>
-                    </label>
+            <!-- BOTÓN -->
+            <div>
+                <button type="submit" id="btnEnviar" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-4 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-xl"></i> Enviar Registro a Mi Centro Clínico
+                </button>
+            </div>
+        </form>
+    </main>
 
-                    <label class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                        <input type="checkbox" name="actividad" value="Noche: Escaneo corporal de relajación" class="mt-1 w-5 h-5 text-brand-accent rounded border-slate-300 focus:ring-blue-500">
-                        <div class="text-sm">
-                            <strong class="text-brand-900 block">Escaneo corporal de relajación / Mindfulness (10 min)</strong>
-                            <span class="text-slate-600 text-xs">Recorrido mental exhalando tensión desde los pies hasta la cara.</span>
-                        </div>
-                    </label>
-
-                    <label class="flex items-start gap
+    <!-- FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https
