@@ -63,11 +63,11 @@
         <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
             <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
                 <h2 class="text-lg font-bold text-slate-900">Historial Detallado de Registros</h2>
-                <span id="contadorRegistros" class="text-xs bg-slate-100 text-slate-600 font-semibold px-3 py-1 rounded-full">Cargando...</span>
+                <span id="contadorRegistros" class="text-xs bg-slate-100 text-slate-600 font-semibold px-3 py-1 rounded-full">Conectando...</span>
             </div>
 
             <div id="listaRegistros" class="space-y-4">
-                <div class="text-center py-12 text-slate-400">
+                <div class="text-center py-12 text-slate-400" id="mensajeCarga">
                     <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
                     <p class="text-sm">Conectando con la base de datos de Firebase...</p>
                 </div>
@@ -99,15 +99,27 @@
         const elPromedioActividades = document.getElementById('statPromedioActividades');
         const elTasaCumplimiento = document.getElementById('statTasaCumplimiento');
 
-        // Función global para eliminar un registro erróneo por su ID de Firestore
+        // Timeout de seguridad: Si en 6 segundos no responde Firebase, avisa posible bloqueo de reglas
+        let conexionEstablecida = false;
+        setTimeout(() => {
+            if (!conexionEstablecida) {
+                badgeContador.textContent = "Error de conexión";
+                contenedorLista.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center space-y-2">
+                        <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                        <p class="font-bold text-sm">No se pudo conectar o leer la base de datos.</p>
+                        <p class="text-xs">Causa probable: Las <strong>Reglas de Seguridad de Firestore</strong> están bloqueando la lectura. Verifica en la consola de Firebase que la regla permita <code>allow read: if true;</code>.</p>
+                    </div>`;
+            }
+        }, 6000);
+
         window.eliminarRegistro = async function(idDocumento) {
-            if (confirm("¿Estás seguro de que deseas eliminar este registro erróneo? Esta acción no se puede deshacer.")) {
+            if (confirm("¿Estás seguro de que deseas eliminar este registro erróneo?")) {
                 try {
                     await deleteDoc(doc(db, "registros_paciente", idDocumento));
-                    // El listener en tiempo real actualizará la interfaz automáticamente
                 } catch (error) {
-                    console.error("Error al eliminar el documento: ", error);
-                    alert("Hubo un error al intentar eliminar el registro.");
+                    console.error("Error al eliminar: ", error);
+                    alert("Error al intentar eliminar el registro.");
                 }
             }
         };
@@ -115,6 +127,7 @@
         const q = query(collection(db, "registros_paciente"), orderBy("timestamp", "desc"));
 
         onSnapshot(q, (querySnapshot) => {
+            conexionEstablecida = true;
             let htmlContent = "";
             let totalSesiones = querySnapshot.size;
             let sumaActividades = 0;
@@ -128,7 +141,101 @@
                 contenedorLista.innerHTML = `
                     <div class="text-center py-12 text-slate-400">
                         <i class="fa-regular fa-folder-open text-4xl mb-2"></i>
-                        <p class="text-sm">Aún no hay registros enviados por el paciente.</p>
+                        <p class="text-sm">Aún no hay registros enviados por el paciente en la base de datos.</p>
                     </div>`;
                 return;
             }
+
+            badgeContador.textContent = `${totalSesiones} sesiones registradas`;
+
+            let arrayDocumentos = [];
+            querySnapshot.forEach((docSnap) => {
+                arrayDocumentos.push({ id: docSnap.id, ...docSnap.data() });
+            });
+
+            arrayDocumentos.forEach(data => {
+                const completadas = data.totalCompletadas || (data.actividades ? data.actividades.length : 0);
+                sumaActividades += completadas;
+                totalPosiblesAcumuladas += (data.totalPosibles || 11);
+            });
+
+            const promedio = (sumaActividades / totalSesiones).toFixed(1);
+            const tasaGlobal = totalPosiblesAcumuladas > 0 ? Math.round((sumaActividades / totalPosiblesAcumuladas) * 100) : 0;
+
+            elTotalSesiones.textContent = totalSesiones;
+            elPromedioActividades.textContent = promedio;
+            elTasaCumplimiento.textContent = `${tasaGlobal}%`;
+
+            arrayDocumentos.forEach(data => {
+                const idDoc = data.id;
+                const nombreApellido = data.nombreApellido || "Paciente no especificado";
+                const fechaFormateada = data.fecha || "Fecha no especificada";
+                const totalCompletadas = data.totalCompletadas || (data.actividades ? data.actividades.length : 0);
+                const totalPosibles = data.totalPosibles || 11;
+                const porcentajeSesion = Math.round((totalCompletadas / totalPosibles) * 100);
+                const observaciones = data.observaciones || "Sin observaciones adicionales.";
+                
+                let horaEnvio = "";
+                if (data.timestamp && data.timestamp.toDate) {
+                    horaEnvio = data.timestamp.toDate().toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' });
+                }
+
+                let actividadesHTML = "";
+                if (data.actividades && data.actividades.length > 0) {
+                    data.actividades.forEach(act => {
+                        actividadesHTML += `<li class="text-xs text-slate-700 flex items-center gap-2 py-0.5"><i class="fa-solid fa-check text-emerald-600"></i> ${act}</li>`;
+                    });
+                } else {
+                    actividadesHTML = `<li class="text-xs text-slate-400 italic">No se marcaron actividades en este envío.</li>`;
+                }
+
+                htmlContent += `
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4 shadow-sm hover:border-slate-300 transition-colors">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-200 pb-3">
+                            <div class="flex items-center gap-3 flex-wrap">
+                                <span class="bg-slate-900 text-white font-bold text-xs px-3 py-1 rounded-xl"><i class="fa-solid fa-user mr-1"></i> ${nombreApellido}</span>
+                                <span class="bg-blue-600 text-white font-bold text-xs px-3 py-1 rounded-xl"><i class="fa-solid fa-calendar-day mr-1"></i> ${fechaFormateada}</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> ${horaEnvio || 'Procesando...'}</span>
+                                <button onclick="eliminarRegistro('${idDoc}')" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold px-3 py-1.5 rounded-xl transition-all" title="Eliminar registro erróneo">
+                                    <i class="fa-solid fa-trash-can mr-1"></i> Eliminar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-100">
+                            <span class="text-xs font-semibold text-slate-700">Cumplimiento de la sesión: <strong class="text-emerald-700">${totalCompletadas} de ${totalPosibles} actividades</strong></span>
+                            <span class="text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full">${porcentajeSesion}% completado</span>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Actividades realizadas:</p>
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 bg-white p-4 rounded-xl border border-slate-100">
+                                ${actividadesHTML}
+                            </ul>
+                        </div>
+
+                        <div class="bg-amber-50/60 border border-amber-200/60 p-3 rounded-xl text-xs text-amber-900">
+                            <strong class="font-semibold block mb-1"><i class="fa-solid fa-comment-medical mr-1"></i> Observaciones del paciente:</strong>
+                            <p class="italic text-slate-700">${observaciones}</p>
+                        </div>
+                    </div>`;
+            });
+
+            contenedorLista.innerHTML = htmlContent;
+        }, (error) => {
+            conexionEstablecida = true;
+            console.error("Error al leer Firestore: ", error);
+            badgeContador.textContent = "Error de acceso";
+            contenedorLista.innerHTML = `
+                <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center space-y-2">
+                    <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                    <p class="font-bold text-sm">Error de lectura en Firebase.</p>
+                    <p class="text-xs font-mono bg-white p-2 rounded border border-red-100">${error.message}</p>
+                    <p class="text-xs mt-2">Verifica que tus Reglas de Firestore permitan lectura pública (<code>allow read: if true;</code>).</p>
+                </div>`;
+        });
+    </script>
+</body>
+</html>
